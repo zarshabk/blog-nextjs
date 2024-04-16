@@ -1,0 +1,68 @@
+<div className="w-full flex flex-col dark:bg-gray-800 p-5">
+      <div className="my-3">
+        <h2 className="text-gray-500 font-medium text-lg">All Posts</h2>
+      </div>
+      <div className="overflow-x-auto">
+        <Table>
+          <Table.Head>
+            <Table.HeadCell>#</Table.HeadCell>
+            <Table.HeadCell>Image</Table.HeadCell>
+            <Table.HeadCell>Name</Table.HeadCell>
+            <Table.HeadCell>category</Table.HeadCell>
+            <Table.Cell>Author</Table.Cell>
+            <Table.HeadCell>
+              <span className="sr-only">Action</span>
+            </Table.HeadCell>
+          </Table.Head>
+          <Table.Body className="divide-y">
+            {loading && (
+              <TableCell colSpan={5} className="text-center py-5">
+                <Spinner size={"md"} />
+              </TableCell>
+            )}
+            {data &&
+              data.map((d, i) => {
+                return (
+                  <Table.Row
+                    key={d._id}
+                    className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                  >
+                    <Table.Cell>{i + 1}</Table.Cell>
+                    <Table.Cell>
+                      <img src={d?.images[0]} height={50} width={50} />
+                    </Table.Cell>
+                    <Table.Cell>{d?.title}</Table.Cell>
+                    <Table.Cell>{d?.category_id?.name}</Table.Cell>
+                    <Table.Cell>{d?.author_id?.email}</Table.Cell>
+                    <Table.Cell>
+                      {d?.status ? (
+                        <span className="bg-green-200 rounded-[30px] py-[4px] px-2 text-green-500">
+                          active
+                        </span>
+                      ) : (
+                        <span className="bg-red-200 rounded-[30px] py-[4px] px-2 text-red-500">
+                          inActive
+                        </span>
+                      )}
+                    </Table.Cell>
+                    <Table.Cell className="flex gap-2">
+                      <button onClick={() => deleteCategory(d?._id)}>
+                        <AiOutlineDelete
+                          size={25}
+                          className="text-red-400 hover:scale-[1.1]"
+                        />
+                      </button>
+                      <Link href={`/dashboard/category/${d?._id}`}>
+                        <AiOutlineEdit
+                          size={25}
+                          className="text-green-500 hover:scale-[1.1]"
+                        />
+                      </Link>
+                    </Table.Cell>
+                  </Table.Row>
+                );
+              })}
+          </Table.Body>
+        </Table>
+      </div>
+    </div>
